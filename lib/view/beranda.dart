@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:rumkit_covid/controller/rumkirmodel.dart';
+import 'package:rumkit_covid/models/berita.dart';
 import 'package:rumkit_covid/models/model.dart';
 
 class Beranda extends GetView<rumkitcontroller> {
@@ -12,7 +13,22 @@ class Beranda extends GetView<rumkitcontroller> {
   @override
   Widget build(BuildContext context) {
     Get.put(rumkitcontroller());
+    List<berita> all = [
+      berita(
+          title: 'Berita terbaru dari covid 19',
+          image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu586AO6MxdQ-mYf8mfkbAL0euQ4i9pojjVg&usqp=CAU"),
+      berita(
+          title: 'Layanan covid 19 terbaru',
+          image:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM7LDLwJCIYuzPTs166uCehOZjVgvcybYdCQ&usqp=CAU'),
+      berita(
+          title: "List kota dengan kasus covid terbanya",
+          image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3C2p-I-256ivErfPZa9EU8eJoYdNhZfl5AA&usqp=CAU")
+    ];
     return Scaffold(
+      
         body: FutureBuilder<List<datarumkit>>(
       future: controller.getdata(),
       builder: (context, snapshot) {
@@ -29,45 +45,51 @@ class Beranda extends GetView<rumkitcontroller> {
               physics: NeverScrollableScrollPhysics(),
               children: [
                 SizedBox(
-                  height: 250,
+                  height: 220,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 3,
+                    itemCount: all.length,
                     itemBuilder: (BuildContext context, int index) {
                       return CarouselSlider(
-
+                        disableGesture: false,
                         items: [
                           Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:
-                                  EdgeInsets.only(left: 0, right: 16, top: 20),
-                              height: 149,
-                              width: 250,
-                              decoration: BoxDecoration(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                    left: 20, right: 20, top: 20),
+                                height: 149,
+                                width: 250,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Color.fromARGB(255, 187, 182, 182)),
+                                child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Color.fromARGB(255, 187, 182, 182)),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 26),
-                              child: Text(
-                                "Berita terbaru dari covid 19 \n jangan keluar keluar",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                  child: Image.network("${all[index].image}"),
+                                ),
                               ),
-                            )
-                          ],
-                        ),
-                        ], options: CarouselOptions(
-                          aspectRatio: 19/12,
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 26),
+                                child: Text(
+                                  "${all[index].title}",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                        options: CarouselOptions(
+                          aspectRatio: 16 / 9,
+                           autoPlayInterval: const Duration(seconds: 5),
+                           enlargeCenterPage: true,
+                          viewportFraction: 1.0,
                           autoPlayCurve: Curves.decelerate,
                           autoPlay: true,
-
                         ),
-                         
                       );
                     },
                   ),
@@ -90,13 +112,16 @@ class Beranda extends GetView<rumkitcontroller> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(
-                              left: 16,
+                              left: 20,
                             ),
                             height: 100,
                             width: 100,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Color.fromARGB(255, 187, 182, 182)),
+                            child: Center(
+                              child: Icon(Icons.accessibility_rounded),
+                            ),
                           ),
                           SizedBox(
                             height: 10,
@@ -111,7 +136,7 @@ class Beranda extends GetView<rumkitcontroller> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 SizedBox(
                   height: Get.height,
@@ -142,18 +167,30 @@ class Beranda extends GetView<rumkitcontroller> {
                                     height: 50,
                                     width: 50,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.amber),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Center(
+                                        child: Icon(Icons.local_hospital)),
                                   ),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   Expanded(
                                     child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text("${API?[index].name}",overflow: TextOverflow.ellipsis,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                                        Text(
+                                          "${API?[index].name}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
                                         // RichText(
                                         //   text: TextSpan(
-                                            
+
                                         //       text: '${API?[index].name}',
                                         //       style:
                                         //           TextStyle(color: Colors.black)),
@@ -163,7 +200,12 @@ class Beranda extends GetView<rumkitcontroller> {
                                         // API?[index].phone != null
                                         //     ? Text("${API?[index].phone}")
                                         //     : Text("Tidak ada nomor hp"),
-                                        Text("${API?[index].region}",overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.grey[10]),)
+                                        Text(
+                                          "${API?[index].region}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style:
+                                              TextStyle(color: Colors.grey[10]),
+                                        )
                                       ],
                                     ),
                                   )
